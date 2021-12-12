@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Horizontal Stacked Bar Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        svg{
+            width: 100%;
+            height: 100%;
+        }
+        #container
+        {
+            width: 88%;
+            margin: auto;
+            padding-top: 3%;
+        }
+        li {
+  float: left;
+}
+
+        li a, .dropbtn {
+  display: inline-block;
+  color: rgb(226, 31, 31);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: rgb(49, 45, 45);
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+    </style>
+</head>
+<body>
+<div id = "container">
+    <svg viewBox = "0 0 700 600">
+
+    </svg>
+</div>
+<div>
+    
+    <nav>
+        <a href="index.html"><button class="button button1">BACK</button></a>
+        <!-- <a href="index1.html"><button class="button button2">PHARMACEUTICAL</button></a>
+        <a href="index2.html"><button class="button button3">MOTOR SECTOR</button></a>
+        <a href="index3.html"><button class="button button4">LINE GRAPH</button></a> -->
+    </nav>
+    <ul>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+          <div class="dropdown-content">
+            <a href="index7.html">TCS</a>
+            <a href="index6.html">Infosys</a>
+            <a href="index5.html">HCL</a>
+            <a href="index_mindtree.html">Mind_Tree</a>
+            <a href="index_TCS.html">TCS</a>
+            <a href="index_sunpharma.html">sunpharma</a>
+            <a href="index_auropharma.html">auropharma</a>
+            <a href="index_cipla.html">cipla</a>
+            <a href="index_DRR.html">DRR</a>
+            <a href="index_Glenmark.html">Glenmark</a>
+            <a href="index_tvs.html">Tvs</a>
+            <a href="index_m&m.html">m&m</a>
+            <a href="index_bajaj.html">bajaj</a>
+            <a href="index_tata.html">tata</a>
+            <a href="index_maruti.html">maruti</a>
+            
+          </div>
+        </li>
+      </ul>
+  </div>
+<script>
+    //step 1 : Select svg element
+    let svg = d3.select('svg') 
+    let margins={left:0,right:20,top:20,bottom:10};
+    
+    //step 2 : read csv files and convert data types
+    d3.csv('DATA/Maruti auto_heatmap.csv',function (d) {
+        //converting data types:
+        return{ date: new Date(d.Date),
+        open: parseFloat(d.OPEN),
+        low: parseFloat(d.LOW),
+        high: parseFloat(d.HIGH),
+        close: parseFloat(d.close)
+
+        };
+        //console.log(d.date);
+    }).then(function (data){
+        //let us check the data
+       console.log(data);
+
+    //step 3 : use stack generator to stack data
+    let stack = d3.stack().keys(["open",
+    "low","high","close"])
+
+    let stackedseries = stack(data)
+
+//control the stacked data:
+console.log(stackedseries);
+    //step 4 : Get min max and make the scaling function 
+    let xMin_Max = {min:0 , max: d3.max(stackedseries,
+        function (d){return d3.max(d, function(d)
+            {
+                return d[1]; })})}
+    //let us control xMim_Max:
+    //console.log(xMin_Max)
+    //scaling function 
+    let yscale = d3.scaleTime()
+                    .domain(d3.extent(data,function (d){return d.date}))
+                    .range([500,0])// as the axis is from top=0
+
+    let  xscale = d3.scaleLinear()
+                    .domain([xMin_Max.min,xMin_Max.max])
+                    .range([0, 600])
+    let colors =["#6a2c70","#b83b5e","#f08a5d","#eeecda"]
+
+    let groups = svg.selectAll('g').data(stackedseries)
+                    .enter().append('g')
+                    .style('fill',function(d,i){
+                        return colors[i];
+                    });
+
+    let rects = groups.selectAll('rect').data(function (d){return d}).enter().append('rect')
+        .attr("x",function (d){return xscale(d[0])})
+        .attr("y",function (d,i){return yscale(data[i].date)})
+        .attr("width",function (d){return xscale(d[1]-d[0])})
+        .attr("height",function (d){return 10})
+        rects.attr("transform","translate(50,0)")
+    
+    let y_axis=svg.append("g")
+    .attr("transform","translate(50,"+margins.bottom+")")
+    .call(d3.axisLeft(yscale))
+    svg.append("text")
+     .attr("transform","translate(" + 30 + "," + 300 + ")",)
+  // .attr("x",0 - (height / 2))
+  // .attr("dy", "1em")
+  .style("text-anchor", "middle")
+  .text("Date");
+    
+    let x_axis=svg.append("g")
+    .attr("transform","translate(50,"+(500-margins.bottom+margins.top)+")")
+    .call(d3.axisBottom(xscale));
+    svg.append("text")             
+      .attr("transform",
+      "translate(" +300 +"," + 550 + ")")
+      .style("text-anchor", "middle")
+      .text("Close_value");
+                }) 
+</script>
+</body>
+</html>

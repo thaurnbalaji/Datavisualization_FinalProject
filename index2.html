@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        .bar {
+            fill: rgba(248, 11, 11, 0.801);
+        }
+        .axisLabel{
+          font-family: sans-serif;
+          font-size: large;
+        }
+        .title{
+          font-size: 30pt;
+          font-family: sans-serif;
+          text-anchor: middle;
+          color: black;
+          /* 'z-index': 1001; */
+}
+body {
+  background-color: peachpuff;
+  /*opacity: 0.3;*/
+}
+li {
+  float: left;
+}
+
+        li a, .dropbtn {
+  display: inline-block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: green;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: green;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="barchart.js"></script>
+</head>
+<body>
+<svg width="1000" height="1000" id="figure1"></svg>
+<svg width="1000" height="1000" id="figure2"></svg>
+<svg width="1000" height="1000" id="figure3"></svg>
+<svg width="1000" height="1000" id="figure4"></svg>
+<svg width="1000" height="1000" id="figure5"></svg>
+
+<div>
+    <nav>
+        <a href="index.html"><button class="button button1">BACK</button></a>
+        <!-- <a href="index1.html"><button class="button button2">PHARMACEUTICAL</button></a>
+        <a href="index2.html"><button class="button button3">MOTOR SECTOR</button></a>
+        <a href="index3.html"><button class="button button4">LINE GRAPH</button></a> -->
+    </nav>
+    <ul>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+          <div class="dropdown-content">
+            <a href="index1.html">PHARMACEUTICAL</a>
+            <a href="index2.html">AUTO MOBILE</a>
+            <a href="index4.html">IT SECTOR</a>
+          </div>
+        </li>
+      </ul>
+  </div>
+<script>
+
+
+    const loadData = d3.csv("DATA/maruti close.csv",
+        function(d) {
+        return {
+      //  date: d3.timeParse("%Y-%m")(d.Date),
+        date:new Date(d.Date),
+        // series: Number(d.series),
+        // open: Number(d.OPEN),
+        // high: Number(d.HIGH),
+        close: parseFloat(d.Close)}
+        //close_info:parseFloat(d.close_infosys)}
+        // company:d.company,
+        // values:parseFloat(d.values)}
+    })
+    bar_plot(loadData,"#figure1",title="MARUTI");
+    const loadData1 = d3.csv("DATA/mandm.csv",
+        function(d) {
+        return {
+
+        date:new Date(d.Date),
+        close: parseFloat(d.Close)}
+    })
+    bar_plot(loadData1,"#figure2",title="MAHINDRA and MAHINDRA");
+    const loadData2 = d3.csv("DATA/tvs close.csv",
+        function(d) {
+        return {
+
+        date:new Date(d.Date),
+        close: parseFloat(d.Close)}
+    })
+    bar_plot(loadData2,"#figure3",title="TVS");
+    const loadData3 = d3.csv("DATA/TATAAUTO.csv",
+        function(d) {
+        return {
+
+        date:new Date(d.Date),
+        close: parseFloat(d.Close)}
+    })
+    bar_plot(loadData3,"#figure4",title="TATAAUTOMOBILE");
+    const loadData4 = d3.csv("DATA/bajaj close.csv",
+        function(d) {
+        return {
+
+        date:new Date(d.Date),
+        close: parseFloat(d.Close)}
+    })
+    bar_plot(loadData4,"#figure5",title="BAJAJ");
+    
+
+</script>
+</body>
+</html>

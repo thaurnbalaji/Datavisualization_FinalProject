@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <style>
+        body {background-color: powderblue;}
+        h1   {color:brown;}
+        .button {
+        border: black;
+        color: green;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+}
+
+.button1 {background-color: white;
+          color: black;
+          border: 2px solid #4CAF50;} /* Green */
+.button1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+.button2 {
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+}
+
+.button2:hover {
+  background-color: #008CBA;
+  color: white;
+} 
+.button3 {
+  background-color: white; 
+  color: black;;
+  border: 2px solid red;
+} /* yellow */
+.button3:hover {
+  background-color: red;
+  color: white;
+}
+body {
+  margin: 0;
+}
+
+#over img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+        </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="./libs/css/bootstrap.min.css">
+    <script src="./libs/js/bootstrap.bundle.min.js"></script>
+    <script src="./libs/js/d3.min.js"></script>
+    <script src="./libs/js/d3_topo.min.js"></script>
+    <script src="./libs/js/colorlegend.js"></script>
+
+    <link rel="stylesheet" href="./style.css">
+    <h1 style="font-size:40px;" >Visualizing the Impact of COVID-19 Pandemic on Indian Stock Market</h1>
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <!-- <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">DV_PROJECT</a> -->
+        <h2 class="h2">Dashboard</h2>
+        <h3></h3>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./index1.html"><button class="button button1">
+                                Bar Graph</button>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./index3.html"><button class="button button2">
+                                Line Graph</button>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./index6.html"><button class="button button3">
+                                Heat Map </button></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div id="over" style="position:absolute; width:100%; height:100%">
+                <img src="Stock Market.gif"alt="Stock Market Representation Pic" style="width:800px;height:400px;">
+              </div>
+            
+
+                <svg id="map"></svg>
+                <div id="quantileLegendVertical" class="legend2"></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="./scripts/geoPlotScript.js"></script>
+
+    <div id="tooltip"></div>
+</body>
+
+</html>
